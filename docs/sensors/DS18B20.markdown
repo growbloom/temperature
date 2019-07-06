@@ -1,0 +1,22 @@
+# Sensor DS18B20
+
+## Attributes
+
+### Name
+
+The sensor's name that should be given when running the program is `DS18B20`.
+
+### Path
+
+The sensor's path that should be given when running the program will probably
+look like `/sys/bus/w1/devices/28-xxxxxxxxxxxx/w1_slave` where is
+_xxxxxxxxxxxx_ is unique for your sensor.
+
+## Example of usage
+
+This example only shows the parameters used for the sensor, not the ones used
+to export the temperature.
+
+```bash
+./temperature --sensor=DS18B20 --sensor-path=/sys/bus/w1/devices/28-xxxxxxxxxxxx/w1_slave
+```
