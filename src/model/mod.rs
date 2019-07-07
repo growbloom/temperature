@@ -22,3 +22,4 @@
 pub use temperature::Temperature;
 
 mod temperature;
+pub mod request;

@@ -22,6 +22,8 @@
 extern crate clap;
 
 use clap::{App, Arg};
+use temperature::http::JsonSerializable;
+use temperature::model::request::Measure;
 use temperature::sensor;
 use temperature::sensor::Sensor;
 
@@ -42,16 +44,26 @@ fn main() {
                         .value_name("SENSOR PATH")
                         .help("The path where to read the sensor's temperature.")
                         .takes_value(true))
+                    .arg(Arg::with_name("export-url")
+                        .short("u")
+                        .long("export-url")
+                        .value_name("EXPORT URL")
+                        .takes_value(true))
                     .get_matches();
 
     let sensor_name = args.value_of("sensor").expect("The sensor is missing.");
     let sensor_path = args.value_of("sensor-path").expect("The sensor path is missing.");
+    let export_url = args.value_of("export-url").expect("The export URL is missing.");
+    let client = reqwest::Client::new();
 
     if sensor_name == sensor::Ds18b20::NAME {
         let mut sensor = temperature::sensor::Ds18b20::new();
         sensor.path = sensor_path;
         let temperature = sensor.read();
-        println!("{:?}", temperature);
+        let mut measure = Measure::new(temperature, 0);
+        measure.init_timestamp();
+        client.post(export_url)
+            .json(&measure.json_serialize());
     }
     
 

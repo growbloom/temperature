@@ -13,6 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Temperature.  If not, see <https://www.gnu.org/licenses/>.
 
-pub mod http;
-pub mod model;
-pub mod sensor;
+/*!
+ * Module http.
+ *
+ * Here arare defined the HTTP-related traits.
+ */
+
+use std::collections::HashMap;
+
+pub trait JsonSerializable {
+    /// Encode the current object to JSON
+    fn json_serialize(&self) -> HashMap<&str, String>;
+}
